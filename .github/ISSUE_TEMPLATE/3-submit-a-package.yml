@@ -1,0 +1,51 @@
+name: Submit a package
+description: Publish a package for Ember. It's virus-scanned and published automatically.
+title: "[Package] "
+labels: ["package-submission"]
+body:
+  - type: markdown
+    attributes:
+      value: |
+        Thanks for contributing! Read [how to package a program for Ember](https://github.com/Cherry-Systems/ember-packages/blob/main/CONTRIBUTING.md) first: most Linux downloads won't run on Ember as they are.
+        - Submit an **Ember package** (a `.tar.xz` with a `.PKGINFO` file). GitHub only accepts certain file types, so put it inside a **.zip** first. The limit is 25 MB.
+        - It's **virus-scanned automatically** a minute or so after you submit. If it passes and follows the [community package rules](https://github.com/Cherry-Systems/ember-packages/blob/main/CONTRIBUTING.md#community-package-rules), it's **published straight away** to the community repository.
+        - If it fails the virus scan, the file is removed and the submission is closed.
+  - type: input
+    id: name
+    attributes:
+      label: Package name
+      placeholder: e.g. cowsay
+    validations:
+      required: true
+  - type: input
+    id: version
+    attributes:
+      label: Version
+      placeholder: e.g. 3.8.4
+  - type: textarea
+    id: description
+    attributes:
+      label: What is it?
+      description: What does the program do?
+    validations:
+      required: true
+  - type: input
+    id: source
+    attributes:
+      label: Where does it come from?
+      description: The program's website or source code.
+      placeholder: https://...
+  - type: textarea
+    id: file
+    attributes:
+      label: Package file
+      description: Drag and drop your .zip into this box (or click the box, then the paperclip / "Paste, drop, or click to add files" below it).
+    validations:
+      required: true
+  - type: checkboxes
+    id: agreement
+    attributes:
+      label: Before you submit
+      options:
+        - label: Its license allows it to be shared, and I'm allowed to share it.
+          required: true

@@ -1,0 +1,17 @@
+name: Suggest a feature
+description: An idea for a new package, or something that would make Ember better.
+title: "[Idea] "
+labels: ["enhancement"]
+body:
+  - type: textarea
+    id: idea
+    attributes:
+      label: What's your idea?
+      description: If it's a program you'd like packaged, include its name and website.
+    validations:
+      required: true
+  - type: textarea
+    id: why
+    attributes:
+      label: Why would it be useful?
+      description: What would you use it for?

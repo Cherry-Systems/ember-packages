@@ -1,0 +1,33 @@
+name: Report an issue
+description: A package is broken, won't install, or doesn't work properly.
+title: "[Issue] "
+labels: ["bug"]
+body:
+  - type: input
+    id: package
+    attributes:
+      label: Which package?
+      description: Its name, and the version if you know it (`ember-pkg info NAME` shows it).
+      placeholder: e.g. nano 9.2-2
+    validations:
+      required: true
+  - type: textarea
+    id: what-happened
+    attributes:
+      label: What happened?
+      description: What did you do, what did you expect to happen, and what happened instead?
+    validations:
+      required: true
+  - type: textarea
+    id: steps
+    attributes:
+      label: How can we make it happen ourselves?
+      placeholder: |
+        1. ember-pkg install ...
+        2. ...
+  - type: textarea
+    id: output
+    attributes:
+      label: Error messages or output
+      description: Paste any errors here. They're shown as plain text, so no formatting is needed.
+      render: text

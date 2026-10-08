@@ -1,0 +1,51 @@
+name: Scan package submission
+
+on:
+  issues:
+    types: [opened, edited, labeled]
+  workflow_dispatch:
+    inputs:
+      remove:
+        description: Name of a community package to take out of the repository
+        required: true
+
+permissions:
+  contents: write
+  issues: write
+  pages: write
+
+concurrency:
+  group: scan-${{ github.event.issue.number || 'remove' }}
+  cancel-in-progress: ${{ github.event_name == 'issues' }}
+
+jobs:
+  scan:
+    if: github.event_name == 'workflow_dispatch' || contains(github.event.issue.labels.*.name, 'package-submission')
+    runs-on: ubuntu-latest
+    timeout-minutes: 30
+    steps:
+      # The repo is mostly package files, so only fetch what the scanner needs.
+      - uses: actions/checkout@v7
+        with:
+          sparse-checkout: |
+            /.github/
+            /community/
+            /x86_64/index
+          sparse-checkout-cone-mode: false
+      - name: Get ClamAV
+        if: github.event_name == 'issues'
+        run: docker pull -q clamav/clamav:stable
+      - name: Scan the attached files and publish
+        if: github.event_name == 'issues'
+        run: python3 .github/scripts/scan-submission.py
+        env:
+          GITHUB_TOKEN: ${{ github.token }}
+          COMMUNITY_SIGNING_KEY: ${{ secrets.COMMUNITY_SIGNING_KEY }}
+          EXTRA_FILE_URL_PREFIX: ${{ vars.EXTRA_FILE_URL_PREFIX }}
+      - name: Remove a community package
+        if: github.event_name == 'workflow_dispatch'
+        run: python3 .github/scripts/scan-submission.py --remove "$NAME"
+        env:
+          NAME: ${{ inputs.remove }}
+          GITHUB_TOKEN: ${{ github.token }}
+          COMMUNITY_SIGNING_KEY: ${{ secrets.COMMUNITY_SIGNING_KEY }}
